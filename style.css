@@ -1,0 +1,393 @@
+:root {
+    --danger: #ff0000;
+    --danger-low: #330000;
+    --danger-bright: #ff4d4d;
+    --bg: #030303;
+    --text: #ffffff;
+    --text-dim: #666;
+    --font-mono: 'Fira Code', monospace;
+    --glitch-speed: 3s;
+}
+
+/* --- RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: crosshair;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+}
+
+/* --- OVERLAYS CINEMATOGRÁFICOS --- */
+.crt-master-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.05));
+    background-size: 100% 3px, 3px 100%;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.vignette {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, transparent 40%, black 150%);
+    z-index: 9998;
+    pointer-events: none;
+}
+
+.noise-layer {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://media.giphy.com/media/oEI9uWUicHkS4/giphy.gif');
+    opacity: 0.02;
+    z-index: 9997;
+    pointer-events: none;
+}
+
+.scanline-bar {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 50px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 0, 0, 0.05), transparent);
+    z-index: 9999;
+    animation: scan-move 10s linear infinite;
+}
+
+/* --- SISTEMA DE PARTÍCULAS CSS --- */
+.particles-container {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--danger);
+    opacity: 0.2;
+    animation: particle-rise 20s infinite linear;
+}
+
+/* Gerando posições aleatórias via child (simulação de densidade) */
+.particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 25%; animation-delay: 2s; }
+.particle:nth-child(3) { left: 40%; animation-delay: 5s; }
+.particle:nth-child(4) { left: 60%; animation-delay: 1s; }
+.particle:nth-child(5) { left: 80%; animation-delay: 7s; }
+.particle:nth-child(6) { left: 95%; animation-delay: 3s; }
+.particle:nth-child(7) { left: 15%; animation-delay: 8s; }
+.particle:nth-child(8) { left: 45%; animation-delay: 4s; }
+.particle:nth-child(9) { left: 70%; animation-delay: 6s; }
+
+/* --- NAVEGAÇÃO --- */
+.hacker-nav {
+    border-bottom: 1px solid var(--danger-low);
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 5%;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+}
+
+.danger-blink {
+    color: var(--danger);
+    animation: blink 0.8s infinite;
+}
+
+.brand { font-weight: 700; color: var(--danger-bright); }
+
+/* --- HERO SECTION & GLITCH --- */
+.hero-glitch {
+    padding: 100px 5% 60px;
+    text-align: center;
+}
+
+.pre-title {
+    color: var(--danger);
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+}
+
+.mega-glitch {
+    font-size: clamp(3rem, 15vw, 8rem);
+    font-weight: 900;
+    position: relative;
+    color: var(--text);
+    letter-spacing: -5px;
+    line-height: 0.9;
+}
+
+.mega-glitch::before, .mega-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+}
+
+.mega-glitch::before {
+    left: 4px;
+    text-shadow: -3px 0 var(--danger);
+    clip: rect(44px, 9999px, 56px, 0);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.mega-glitch::after {
+    left: -4px;
+    text-shadow: -3px 0 #00ffff;
+    clip: rect(85px, 9999px, 140px, 0);
+    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+}
+
+.data-stream {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 0.65rem;
+    border: 1px solid var(--danger-low);
+    padding: 5px 12px;
+    color: var(--text-dim);
+}
+
+/* --- GRID BENTO BRUTALISTA --- */
+.bento-matrix {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 5%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: #080808;
+    border: 1px solid #1a1a1a;
+    position: relative;
+    padding: 30px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card:hover {
+    border-color: var(--danger);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.card-header {
+    font-size: 0.6rem;
+    color: var(--danger);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.card-lrg { grid-column: span 3; }
+.card-med { grid-column: span 2; }
+.card-sm { grid-column: span 1; }
+
+.tech-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    background: var(--danger-low);
+    color: var(--danger-bright);
+    padding: 4px 10px;
+    margin: 10px 5px 0 0;
+}
+
+/* --- REPO LIST & BARS --- */
+.repo-list { list-style: none; }
+.repo-list li {
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    color: var(--text-dim);
+    transition: 0.3s;
+}
+.repo-list li:hover { color: var(--danger); transform: translateX(5px); }
+.hash { color: var(--danger); font-weight: bold; margin-right: 5px; }
+
+.bar-container { margin-bottom: 15px; }
+.bar-label { font-size: 0.6rem; margin-bottom: 5px; display: flex; justify-content: space-between; }
+.bar-outer { width: 100%; height: 4px; background: #1a1a1a; }
+.bar-inner { height: 100%; background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+
+/* --- CONSOLE BOX --- */
+.console-box {
+    background: #000;
+    padding: 15px;
+    height: 150px;
+    overflow-y: auto;
+    border: 1px solid #111;
+}
+
+.ln { font-size: 0.7rem; color: #444; margin-bottom: 5px; }
+.ln-r { font-size: 0.7rem; color: var(--danger); margin-bottom: 5px; }
+.ln-g { font-size: 0.7rem; color: #00ff41; margin-bottom: 5px; }
+
+/* --- DECORAÇÕES DE CANTO --- */
+.corner-accents span {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-color: var(--danger);
+    border-style: solid;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.card:hover .corner-accents span { opacity: 1; }
+
+.corner-accents span:nth-child(1) { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.corner-accents span:nth-child(2) { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+.corner-accents span:nth-child(3) { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+.corner-accents span:nth-child(4) { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+/* --- FOOTER --- */
+.terminal-footer {
+    padding: 60px 5%;
+    border-top: 1px solid #111;
+    margin-top: 100px;
+}
+
+.prompt-line { font-size: 1rem; margin-bottom: 20px; }
+.dir { color: var(--danger); margin-right: 10px; }
+.cursor { animation: blink 1s infinite; color: var(--danger); }
+
+.footer-links { display: flex; gap: 30px; }
+.footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+.footer-links a:hover { color: var(--danger); text-shadow: 0 0 10px var(--danger); }
+
+/* --- ANIMAÇÕES KEYFRAMES --- */
+@keyframes scan-move {
+    0% { transform: translateY(-100px); }
+    100% { transform: translateY(110vh); }
+}
+
+@keyframes particle-rise {
+    0% { transform: translateY(110vh); opacity: 0; }
+    20% { opacity: 0.2; }
+    80% { opacity: 0.2; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+@keyframes glitch-anim-1 {
+    0% { clip: rect(132px, 9999px, 101px, 0); }
+    5% { clip: rect(65px, 9999px, 119px, 0); }
+    10% { clip: rect(97px, 9999px, 74px, 0); }
+    15% { clip: rect(77px, 9999px, 20px, 0); }
+    20% { clip: rect(143px, 9999px, 61px, 0); }
+    /* Adicionando mais variação... */
+    100% { clip: rect(10px, 9999px, 50px, 0); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip: rect(65px, 9999px, 119px, 0); }
+    100% { clip: rect(150px, 9999px, 5px, 0); }
+}
+
+/* --- RESPONSIVIDADE EXTREMA --- */
+@media (max-width: 1024px) {
+    .bento-matrix { grid-template-columns: repeat(2, 1fr); }
+    .card-lrg { grid-column: span 2; }
+}
+
+@media (max-width: 768px) {
+    .bento-matrix { grid-template-columns: 1fr; }
+    .card-lrg, .card-med, .card-sm { grid-column: span 1; }
+    .mega-glitch { font-size: 18vw; letter-spacing: -2px; }
+    .viewport { padding-top: 40px; }
+    .nav-container { flex-direction: column; align-items: center; gap: 10px; }
+}
+/* --- PROJETOS: ESTILO DE LINK HACKER --- */
+.repo-list li a {
+    text-decoration: none;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.repo-list li a:hover {
+    color: var(--danger-bright);
+    background: rgba(255, 0, 0, 0.05);
+    border: 1px solid var(--danger-low);
+    transform: translateX(10px);
+    text-shadow: 0 0 8px var(--danger);
+}
+
+.link-status {
+    font-size: 0.6rem;
+    color: var(--danger-low);
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.repo-list li a:hover .link-status {
+    color: var(--danger);
+}
+
+/* Efeito de glitch rápido no hover do link */
+.repo-list li a:active {
+    filter: invert(1);
+    background: var(--danger);
+}
+
+/* --- FOOTER: LINKS SOCIAIS --- */
+.footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.footer-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: var(--danger);
+    transition: 0.3s;
+    box-shadow: 0 0 5px var(--danger);
+}
+
+.footer-links a:hover {
+    color: var(--danger);
+}
+
+.footer-links a:hover::after {
+    width: 100%;
+}
